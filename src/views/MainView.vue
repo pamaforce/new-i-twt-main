@@ -1,7 +1,8 @@
 <template>
   <div class="containers">
+    <v-parallax src="../assets/backpic.jpg" class="itpararllax" height="400"></v-parallax>
     <div id="leftmain">
-      <a href="#/profile" class="avatar">
+      <a @click="delayTo('#/profile')" class="avatar">
         <img
           src="../assets/avatar.png"
           alt="user-avatar"
@@ -12,7 +13,7 @@
         />
       </a>
       <a
-        href="#/profile"
+        @click="delayTo('#/profile')"
         class="username"
         :id="usernames"
         @mouseenter="goin(usernames)"
@@ -21,9 +22,10 @@
         Pamaforce
       </a>
       <img src="../assets/wechat.png" alt="wechat-icon" class="wechat-icon" />
+      <img src="../assets/wechats.png" alt="wechat-icon" class="wechats-icon" />
       <p class="wechat-status">微信：已绑定</p>
       <a
-        href="#/account"
+        @click="delayTo('#/account')"
         class="changewechat"
         :id="changewechats"
         @mouseenter="goin(changewechats)"
@@ -66,7 +68,9 @@
         <img src="../assets/logo.png" alt="twt-icon" class="twt-icon" />
       </a>
     </div>
-    <div id="division"></div>
+    <div id="division">
+      <p>功能</p>
+    </div>
     <div id="rightmain">
       <div
         class="setprofile btnteam"
@@ -74,9 +78,8 @@
         @mouseenter="btnin(0)"
         @mouseleave="btnout(0)"
       >
-        <a href="#/profile" class="btnas"
-          ><img src="../assets/setprofile.png" v-show="btnflags[0]" />
-          <img src="../assets/setprofiles.png" v-show="!btnflags[0]" />
+        <a class="btnas" @click="delayTo('#/profile')" 
+          ><img src="../assets/setprofile.png"  />
           <p>资料设置</p></a
         >
       </div>
@@ -86,9 +89,8 @@
         @mouseenter="btnin(1)"
         @mouseleave="btnout(1)"
       >
-        <a href="#/account" class="btnas"
-          ><img src="../assets/setaccount.png" v-show="btnflags[1]" />
-          <img src="../assets/setaccounts.png" v-show="!btnflags[1]" />
+        <a class="btnas" @click="delayTo('#/account')" 
+          ><img src="../assets/setaccount.png" />
           <p>账户设置</p></a
         >
       </div>
@@ -98,9 +100,8 @@
         @mouseenter="btnin(2)"
         @mouseleave="btnout(2)"
       >
-        <a href="#/upgrade" class="btnas"
-          ><img src="../assets/upgrade.png" v-show="btnflags[2]" />
-          <img src="../assets/upgrades.png" v-show="!btnflags[2]" />
+        <a class="btnas" @click="delayTo('#/upgrade')"
+          ><img src="../assets/upgrade.png" />
           <p>账号升级</p></a
         >
       </div>
@@ -111,11 +112,10 @@
         @mouseleave="btnout(3)"
       >
         <a
-          href="https://login.twt.edu.cn/register/organization"
+          @click="delayToblank('https://login.twt.edu.cn/register/organization')"
           class="btnas"
           target="_blank"
-          ><img src="../assets/organization.png" v-show="btnflags[3]" />
-          <img src="../assets/organizations.png" v-show="!btnflags[3]" />
+          ><img src="../assets/organization.png" />
           <p>注册账号</p></a
         >
       </div>
@@ -138,7 +138,6 @@ export default {
     upgrades: "upgrades",
     organizations: "organizations",
     btns: ["setprofiles", "setaccounts", "upgrades", "organizations"],
-    btnflags: [true, true, true, true],
   }),
   methods: {
     goin(s) {
@@ -150,17 +149,20 @@ export default {
       document.getElementById(s).classList.remove("user-image-in");
     },
     btnin(s) {
-      this.btnflags[s] = false;
-      this.$forceUpdate();
       document.getElementById(this.btns[s]).classList.add("btn-in");
       document.getElementById(this.btns[s]).classList.remove("btn-out");
     },
     btnout(s) {
-      this.btnflags[s] = true;
-      this.$forceUpdate();
       document.getElementById(this.btns[s]).classList.add("btn-out");
       document.getElementById(this.btns[s]).classList.remove("btn-in");
     },
+    delayTo(u) {
+      setTimeout("top.location.href='"+u+"'",300);
+      document.getElementsByClassName('containers')[0].classList.add("all-out");
+    },
+    delayToblank(u) {
+      setTimeout("window.open('"+u+"')",300);
+    }
   },
 };
 </script>
@@ -173,7 +175,7 @@ a:hover {
   color: #0ab0c2;
 }
 #leftmain {
-  position: relative;
+  position: absolute;
   display: inline-block;
   left: 50px;
   top: 55px;
@@ -197,20 +199,24 @@ a:hover {
   height: 200px;
   transition: 0.3s;
   animation-name: ofdivision;
-  animation-duration: 1s;
+  animation-duration: 0.5s;
   animation-timing-function: cubic-bezier(0.24, 0.75, 0.13, 0.98);
-  animation-delay: 0.3s;
+}
+#division p {
+  display: none;
+  position: absolute;
+  left:50%;
+  top:50%;
+  font-size: 18px;
+  font-weight: 700;
+  color:rgb(12, 187, 213);
+  transform: translate(-50%,-50%);
 }
 #rightmain {
   transition: 0.3s;
-  animation-name: ofrightmain;
-  animation-duration: 1s;
-  animation-timing-function: cubic-bezier(0.24, 0.75, 0.13, 0.98);
-  animation-delay: 0.1s;
-  transform-origin: left;
-  position: relative;
+  position: absolute;
   display: inline-block;
-  left: 95px;
+  left: 400px;
   top: 55px;
   height: 360px;
   width: 550px;
@@ -224,9 +230,6 @@ a:hover {
   position: relative;
   display: block;
   transition: 0.3s;
-  animation-name: ofmain;
-  animation-duration: 1s;
-  animation-timing-function: cubic-bezier(0.24, 0.75, 0.13, 0.98);
   margin: auto;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -236,8 +239,7 @@ a:hover {
   border-radius: 6px;
   border: 2px;
   width: 1000px;
-  height: 480px;
-  overflow: hidden;
+  height: 470px;
 }
 .avatar {
   display: block;
@@ -271,7 +273,16 @@ a:hover {
   height: 35px;
   position: absolute;
   left: 60px;
-  top: 235px;
+  top: 230px;
+  display: inline-block;
+}
+.wechats-icon {
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  left: 60px;
+  top: 230px;
+  display: none;
 }
 .wechat-status {
   position: absolute;
@@ -371,6 +382,31 @@ a:hover {
   border: 1px solid #bbb;
   border-radius: 3px;
   box-shadow: 0px 1.5px 5px #aaa;
+  overflow: hidden;
+  animation-name: beout;
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.24, 0.75, 0.13, 0.98);
+}
+.btnteam:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, #666 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform .3s, opacity .5s;
+}
+.btnteam:active:after {
+  transform: scale(0, 0);
+  opacity: .3;
+  transition: 0s;
 }
 .setprofile {
   position: absolute;
@@ -392,16 +428,38 @@ a:hover {
   left: 300px;
   top: 205px;
 }
+#organizations:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #666 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform .3s, opacity .5s;
+}
+#organizations:active:after {
+    transform: scale(0, 0);
+    opacity: .3;
+    //设置初始状态
+    transition: 0s;
+}
+.itpararllax {
+  display: none;
+}
+.all-out {
+  transition: all 0.4s ease-in;
+  transform:translateX(10px);
+  opacity: 0;
+}
 
 @media screen and (min-width: 1025px) {
-  @keyframes ofmain {
-    from {
-      width: 0;
-    }
-    to {
-      width: 1000px;
-    }
-  }
   @keyframes ofrightmain {
     from {
       width: 0px;
@@ -456,6 +514,9 @@ a:hover {
   .wechat-icon {
     left: 45px;
   }
+  .wechats-icon {
+    left: 45px;
+  }
   .wechat-status {
     left: 90px;
   }
@@ -472,11 +533,11 @@ a:hover {
     left: 210px;
   }
   #rightmain {
-    left: 75px;
+    left: 355px;
     width: 337px;
   }
   #division {
-    left: 323px;
+    left: 328px;
   }
   .btnteam {
     width: 140px;
@@ -513,14 +574,6 @@ a:hover {
   .organization {
     left: 178.5px;
     top: 190px;
-  }
-  @keyframes ofmain {
-    from {
-      width: 0;
-    }
-    to {
-      width: 728px;
-    }
   }
   @keyframes ofrightmain {
     from {
@@ -562,13 +615,126 @@ a:hover {
 @media screen and (max-width: 768px) {
   .containers {
     margin: 0;
-    width: 100%;
+    left: -2%;
+    width: 104%;
+    border-radius: 0px;
+    height: 700px;
+    animation: none;
+  }
+  .itpararllax {
+    display: block;
+  }
+  #leftmain {
+    margin: 0;
+    left: 50%;top: 10px;
+    height: 390px;display: block;
+    transform: translate(-50%);
+    background: none;
+    border-radius: 0px;
+    box-shadow: none;
+    border: 0px;
+    animation: none;
+    animation-name: backani;
+    animation-duration: 0.5s;
+    animation-delay: 0.4s;
+    animation-fill-mode: forwards;
+  }
+  #division {
+    left: 50%;
+    top: 375px;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 0px;
+    border-radius: 25px/50%;
+    box-shadow: 1px 2px 8px rgb(12, 130, 209);
+    width: 150px;
+    height: 50px;
+    transition: 0.3s;
+    animation: none;
+  }
+  #division p {
+    display: block;
   }
   #rightmain {
-    width: 278px;
+    left: 50%;
+    top: 410px;
+    height: 360px;
+    transform: translateX(-50%);
+    display: absolute;
+    background: none;
+    border-radius: 0px;
+    box-shadow: none;
+    border: 0px;
+    animation: none;
+  }
+  .wechat-icon {
+    display: none;
+  }
+  .wechats-icon {
+    display: inline-block;
+  }
+  .btnteam {
+    width: 140px;
+    height: 60px;
+    transition: 0.3s;
+    font-size: 16x;
+    background-color: rgb(92, 187, 246);
+    border: 0px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 2px rgb(177,177,177);
+    overflow: hidden;
+  }
+  .btnas {
+    display: block;
+    width: 140px;
+    height: 60px;
+    color: white;
+  }
+  .btnas p {
+    bottom: 0px;
+  }
+  .btnas img {
+    bottom: 10px;
+    width: 40px;
+    height: 40px;
+  }
+ .setprofile {
+    left: 12.5px;
+    top: 55px;
+  }
+  .setaccount {
+    left: 184.5px;
+    top: 55px;
+  }
+  .upgrade {
+    left: 12.5px;
+    top: 145px;
+  }
+  .organization {
+    left: 184.5px;
+    top: 145px;
+  }
+  @keyframes btnin {
+    from {
+      transform: translateY(0px);
+      font-size: 16px;
+    }
+    to {
+      transform: translateY(-1px);
+      font-size: 17px;
+    }
+  }
+  @keyframes btnout {
+    from {
+      transform: translateY(-1px);
+      font-size: 17px;
+    }
+    to {
+      transform: translateY(0px);
+      font-size: 16px;
+    }
   }
 }
-
 @keyframes ofdivision {
   from {
     height: 0px;
@@ -599,6 +765,20 @@ a:hover {
   }
   to {
     transform: scale(1);
+  }
+}
+@keyframes backani {
+  from {
+    background-image: url("../assets/border.png");
+    background-position: 5px 20px;
+    background-repeat: no-repeat;
+    background-size: 258px 344px;
+  }
+  to{
+    background-image: url("../assets/border.png");
+    background-position: 5px 20px;
+    background-repeat: no-repeat;
+    background-size: 252px 336px;
   }
 }
 </style>

@@ -16,7 +16,7 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    component: () => import('@/views/HelloWorld')
+    component: () => import('@/views/MainView')
   },
   {
     path: '/profile',
